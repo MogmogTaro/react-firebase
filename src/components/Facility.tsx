@@ -9,11 +9,33 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
+
+import { IFacility } from "../models/IFacility";
+
+const initFacility: IFacility = {
+  id: "",
+  name: "name の初期値",
+  note: "note の初期値",
+  system: {
+    createDate: new Date(),
+    createUser: {
+      displayName: "ebihara kenji",
+      email: "",
+      face: "https://bit.ly/3pM3urc",
+    },
+    lastUpdateUser: {
+      displayName: "ebihara kenji",
+      email: "",
+      face: "https://bit.ly/3pM3urc",
+    },
+    lastUpdate: new Date(),
+  },
+};
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -34,23 +56,26 @@ const useStyle = makeStyles((theme) => ({
 
 export const Facility: React.FC = () => {
   const style = useStyle();
+  const [facility, setFacility] = useState(initFacility);
+  const { system } = initFacility;
   return (
     <Container maxWidth="sm" className={style.root}>
       <Paper className={style.paper}>
-        <TextField label="設備名" fullWidth />
-        <TextField label="詳細" fullWidth multiline />
+        <TextField label="設備名" fullWidth value={facility.name} />
+        <TextField label="詳細" fullWidth multiline value={facility.note} />
         <InputLabel shrink>登録者</InputLabel>
         <p>
           <Chip
-            label="登録者"
-            avatar={<Avatar src="https://bit.ly/3pM3urc" />}
+            label={system.createUser.displayName}
+            avatar={<Avatar src={system.createUser.face} />}
           />
-          {dayjs(new Date()).format("YYYY-MM-DD-HH")}
+          {dayjs(system.createDate).format("YYYY-MM-DD-HH")}
         </p>
+        <InputLabel shrink>更新者</InputLabel>
         <p>
           <Chip
-            label="更新者"
-            avatar={<Avatar src="https://bit.ly/3pM3urc" />}
+            label={system.lastUpdateUser.displayName}
+            avatar={<Avatar src={system.lastUpdateUser.face} />}
           />
           {dayjs(new Date()).format("YYYY-MM-DD-HH")}
         </p>

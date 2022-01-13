@@ -1,6 +1,6 @@
 import { ISystem } from "./ISystem";
 
-export type IFaciliry = {
+export type IFacility = {
   id: string;
   name: string;
   note?: string;
