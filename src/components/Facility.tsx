@@ -1,23 +1,18 @@
-import {
-  Avatar,
-  Button,
-  Chip,
-  Container,
-  Grid,
-  InputLabel,
-  Paper,
-  TextField,
-  makeStyles,
-} from "@material-ui/core";
-import React, { useState, useCallback } from "react";
-import dayjs from "dayjs";
-
-import DoneIcon from "@material-ui/icons/Done";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Button from "@material-ui/core/Button/Button";
+import Chip from "@material-ui/core/Chip/Chip";
+import Container from "@material-ui/core/Container/Container";
+import Grid from "@material-ui/core/Grid/Grid";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Paper from "@material-ui/core/Paper/Paper";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import TextField from "@material-ui/core/TextField/TextField";
 import DeleteIcon from "@material-ui/icons/Delete";
-
-import { IFacility } from "../models/IFacility";
-
+import DoneIcon from "@material-ui/icons/Done";
+import dayjs from "dayjs";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { IFacility } from "../models/IFacility";
 
 const initFacility: IFacility = {
   id: "",
@@ -59,7 +54,6 @@ const useStyle = makeStyles((theme) => ({
 export const Facility: React.FC = () => {
   const style = useStyle();
   const { system } = initFacility;
-
   const { errors, control } = useForm({
     defaultValues: initFacility,
     mode: "onBlur",
@@ -81,38 +75,23 @@ export const Facility: React.FC = () => {
             />
           }
         />
-
         <Controller
           control={control}
           name="note"
-          rules={{ required: true }}
-          as={
-            <TextField
-              label="詳細"
-              fullWidth
-              multiline
-              error={!!errors.note}
-              helperText={errors.note ? "必須です" : ""}
-            />
-          }
+          as={<TextField label="詳細" fullWidth multiline value="" />}
         />
-
         <InputLabel shrink>登録者</InputLabel>
-        <p>
-          <Chip
-            label={system.createUser.displayName}
-            avatar={<Avatar src={system.createUser.face} />}
-          />
-          {dayjs(system.createDate).format("YYYY-MM-DD-HH")}
-        </p>
+        <Chip
+          label={system.createUser.displayName}
+          avatar={<Avatar src={system.createUser.face} />}
+        />
+        {dayjs(system.createDate).format("YYYY-MM-DD HH:mm")}
         <InputLabel shrink>更新者</InputLabel>
-        <p>
-          <Chip
-            label={system.lastUpdateUser.displayName}
-            avatar={<Avatar src={system.lastUpdateUser.face} />}
-          />
-          {dayjs(new Date()).format("YYYY-MM-DD-HH")}
-        </p>
+        <Chip
+          label={system.lastUpdateUser.displayName}
+          avatar={<Avatar src={system.lastUpdateUser.face} />}
+        />
+        {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
         <Grid container>
           <Grid item xs={6}>
             <Button className={style.cancelButton} startIcon={<DeleteIcon />}>

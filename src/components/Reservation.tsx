@@ -175,21 +175,17 @@ export const Reservation: React.FC = () => {
           as={<TextField label="詳細" fullWidth multiline value="" />}
         />
         <InputLabel shrink>登録者</InputLabel>
-        <p>
-          <Chip
-            label={system.createUser.displayName}
-            avatar={<Avatar src={system.createUser.face} />}
-          />
-          {dayjs(system.createDate).format("YYYY-MM-DD HH:mm")}
-        </p>
+        <Chip
+          label={system.createUser.displayName}
+          avatar={<Avatar src={system.createUser.face} />}
+        />
+        {dayjs(system.createDate).format("YYYY-MM-DD HH:mm")}
         <InputLabel shrink>更新者</InputLabel>
-        <p>
-          <Chip
-            label={system.lastUpdateUser.displayName}
-            avatar={<Avatar src={system.lastUpdateUser.face} />}
-          />
-          {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
-        </p>
+        <Chip
+          label={system.lastUpdateUser.displayName}
+          avatar={<Avatar src={system.lastUpdateUser.face} />}
+        />
+        {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
         <Grid container>
           <Grid item xs={6}>
             <Button className={style.cancelButton} startIcon={<DeleteIcon />}>

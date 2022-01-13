@@ -1,15 +1,15 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Reservation } from "./Reservation";
 import { Facility } from "./Facility";
 import { ReservationList } from "./ReservationList";
 
 export const Routing: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={ReservationList} />
-      <Route path="/reservation" element={Reservation} />
-      <Route path="/facility" element={Facility} />
-    </Routes>
+    <Switch>
+      <Route path="/reservation" component={Reservation} />
+      <Route path="/facility" component={Facility} />
+      <Route path="/" exact component={ReservationList} />
+    </Switch>
   );
 };
