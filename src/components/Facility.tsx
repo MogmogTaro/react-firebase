@@ -17,7 +17,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { IFacility } from "../models/IFacility";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 const initFacility: IFacility = {
   id: "",
@@ -58,36 +58,45 @@ const useStyle = makeStyles((theme) => ({
 
 export const Facility: React.FC = () => {
   const style = useStyle();
-  const [facility, setFacility] = useState(initFacility);
   const { system } = initFacility;
 
-  const { register, errors } = useForm({
+  const { register, errors, control } = useForm({
     defaultValues: initFacility,
     mode: "onBlur",
   });
 
-  const onNameChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newFacility: IFacility = {
-        ...facility,
-        name: e.target.value,
-      };
-      setFacility(newFacility);
-    },
-    [facility]
-  );
   return (
     <Container maxWidth="sm" className={style.root}>
-      <input ref={register({ required: true })} name="name" />
-      <p>{errors.name ? "必須です" : ""}</p>
       <Paper className={style.paper}>
-        <TextField
-          label="設備名"
-          fullWidth
-          value={facility.name}
-          onChange={onNameChange}
+        <Controller
+          control={control}
+          name="name"
+          rules={{ required: true }}
+          as={
+            <TextField
+              label="設備名"
+              fullWidth
+              error={!!errors.name}
+              helperText={errors.name ? "必須です" : ""}
+            />
+          }
         />
-        <TextField label="詳細" fullWidth multiline value={facility.note} />
+
+        <Controller
+          control={control}
+          name="note"
+          rules={{ required: true }}
+          as={
+            <TextField
+              label="詳細"
+              fullWidth
+              multiline
+              error={!!errors.note}
+              helperText={errors.note ? "必須です" : ""}
+            />
+          }
+        />
+
         <InputLabel shrink>登録者</InputLabel>
         <p>
           <Chip
