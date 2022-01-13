@@ -1,4 +1,3 @@
-// path は、パス文字列を操作するための node.js ビルドインのツール
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -38,7 +37,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    static: path.join(__dirname, "dist"),
     compress: true,
     port: 8080,
   },
