@@ -1,6 +1,14 @@
-import { Container, Paper, TextField } from "@material-ui/core";
+import {
+  Avatar,
+  Chip,
+  Container,
+  InputLabel,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import dayjs from "dayjs";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -20,6 +28,21 @@ export const Facility: React.FC = () => {
       <Paper className={style.paper}>
         <TextField label="設備名" fullWidth />
         <TextField label="詳細" fullWidth multiline />
+        <InputLabel shrink>登録者</InputLabel>
+        <p>
+          <Chip
+            label="登録者"
+            avatar={<Avatar src="https://bit.ly/3pM3urc" />}
+          />
+          {dayjs(new Date()).format("YYYY-MM-DD-HH")}
+        </p>
+        <p>
+          <Chip
+            label="更新者"
+            avatar={<Avatar src="https://bit.ly/3pM3urc" />}
+          />
+          {dayjs(new Date()).format("YYYY-MM-DD-HH")}
+        </p>
       </Paper>
     </Container>
   );
