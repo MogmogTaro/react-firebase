@@ -1,7 +1,9 @@
 import {
   Avatar,
+  Button,
   Chip,
   Container,
+  Grid,
   InputLabel,
   Paper,
   TextField,
@@ -18,6 +20,12 @@ const useStyle = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(1),
+  },
+  rightActions: {
+    textAlign: "right",
+  },
+  cancelButton: {
+    color: theme.palette.error.main,
   },
 }));
 
@@ -43,6 +51,18 @@ export const Facility: React.FC = () => {
           />
           {dayjs(new Date()).format("YYYY-MM-DD-HH")}
         </p>
+        <Grid container>
+          <Grid item xs={6}>
+            <Button variant="contained" className={style.cancelButton}>
+              削除
+            </Button>
+          </Grid>
+          <Grid item xs={6} className={style.rightActions}>
+            <Button variant="contained" color="primary">
+              保存
+            </Button>
+          </Grid>
+        </Grid>
       </Paper>
     </Container>
   );
