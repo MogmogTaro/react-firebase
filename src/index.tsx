@@ -1,9 +1,7 @@
-const a = new Date(0);
+import React from "react";
+import ReactDom from "react-dom";
 
-function fn(d: Date) {
-  if (d === a) {
-    console.log(a);
-  }
-}
-
-fn(a);
+ReactDom.render(
+  <div>Hello React World!!</div>,
+  document.getElementById("container")
+);
