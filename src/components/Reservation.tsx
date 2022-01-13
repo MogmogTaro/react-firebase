@@ -97,6 +97,23 @@ export const Reservation = () => {
         />
         <Controller
           control={control}
+          name="endDate"
+          render={(data) => {
+            return (
+              <DateTimePicker
+                value={data.value}
+                onChange={data.onChange}
+                onBlur={data.onBlur}
+                label="終了日時"
+                format="YYYY/MM/DD HH:mm"
+                ampm={false}
+                minutesStep={15}
+              />
+            );
+          }}
+        />
+        <Controller
+          control={control}
           name="subject"
           rules={{ required: true }}
           as={
