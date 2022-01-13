@@ -50,7 +50,7 @@ export const ReservationBar: React.FC<PropsType> = (props) => {
     return leftOffset + dissStart + hourWidth;
   }, [beginHour, hourWidth, leftOffset, startDate]);
 
-  const style = useStyles({
+  const styles = useStyles({
     width,
     left,
     backgroudColor,
