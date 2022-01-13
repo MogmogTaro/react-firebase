@@ -5,24 +5,26 @@ import {
   Container,
   Grid,
   InputLabel,
+  makeStyles,
   Paper,
   TextField,
-  makeStyles,
 } from "@material-ui/core";
-import React, { useState, useCallback } from "react";
 import dayjs from "dayjs";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { IReservation } from "../models/IReservation";
 
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import { IFacility } from "../models/IFacility";
-
-import { Controller, useForm } from "react-hook-form";
-
-const initFacility: IFacility = {
-  id: "",
-  name: "name の初期値",
-  note: "note の初期値",
+const initReservation: IReservation = {
+  id: "001",
+  facilityId: "001",
+  subject: "目的０１",
+  description: "説明００１",
+  startDate: dayjs(),
+  endDate: dayjs().add(1, "hour"),
   system: {
     createDate: new Date(),
     createUser: {
@@ -56,12 +58,12 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export const Facility: React.FC = () => {
+export const Reservation = () => {
   const style = useStyle();
-  const { system } = initFacility;
+  const { system } = initReservation;
 
-  const { errors, control } = useForm({
-    defaultValues: initFacility,
+  const { errors, control } = useForm<IReservation>({
+    defaultValues: initReservation,
     mode: "onBlur",
   });
 
@@ -70,29 +72,29 @@ export const Facility: React.FC = () => {
       <Paper className={style.paper}>
         <Controller
           control={control}
-          name="name"
+          name="subject"
           rules={{ required: true }}
           as={
             <TextField
-              label="設備名"
+              label="目的"
               fullWidth
-              error={!!errors.name}
-              helperText={errors.name ? "必須です" : ""}
+              error={!!errors.subject}
+              helperText={errors.subject ? "必須です" : ""}
             />
           }
         />
 
         <Controller
           control={control}
-          name="note"
+          name="description"
           rules={{ required: true }}
           as={
             <TextField
               label="詳細"
               fullWidth
               multiline
-              error={!!errors.note}
-              helperText={errors.note ? "必須です" : ""}
+              error={!!errors.description}
+              helperText={errors.description ? "必須です" : ""}
             />
           }
         />
