@@ -9,14 +9,17 @@ import {
   Paper,
   TextField,
 } from "@material-ui/core";
-import dayjs from "dayjs";
-import React from "react";
+import dayjs, { Dayjs } from "dayjs";
+import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { IReservation } from "../models/IReservation";
 
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
+
+import { DateTimePicker } from "@material-ui/pickers";
+import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 
 const initReservation: IReservation = {
   id: "001",
@@ -67,9 +70,31 @@ export const Reservation = () => {
     mode: "onBlur",
   });
 
+  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const onDateChange = useCallback((date: MaterialUiPickersDate) => {
+    setDate(date);
+  }, []);
+
   return (
     <Container maxWidth="sm" className={style.root}>
       <Paper className={style.paper}>
+        <Controller
+          control={control}
+          name="startDate"
+          render={(data) => {
+            return (
+              <DateTimePicker
+                value={data.value}
+                onChange={data.onChange}
+                onBlur={data.onBlur}
+                label="開始日時"
+                format="YYYY/MM/DD HH:mm"
+                ampm={false}
+                minutesStep={15}
+              />
+            );
+          }}
+        />
         <Controller
           control={control}
           name="subject"
