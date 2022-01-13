@@ -27,3 +27,5 @@ firebase.ts
 /.firebase
 .firebaserc
 firebase.json
+
+/dist
