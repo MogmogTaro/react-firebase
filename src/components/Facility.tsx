@@ -7,10 +7,13 @@ import {
   InputLabel,
   Paper,
   TextField,
+  makeStyles,
 } from "@material-ui/core";
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import dayjs from "dayjs";
+
+import DoneIcon from "@material-ui/icons/Done";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -53,12 +56,16 @@ export const Facility: React.FC = () => {
         </p>
         <Grid container>
           <Grid item xs={6}>
-            <Button variant="contained" className={style.cancelButton}>
+            <Button className={style.cancelButton} startIcon={<DeleteIcon />}>
               削除
             </Button>
           </Grid>
           <Grid item xs={6} className={style.rightActions}>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<DoneIcon />}
+            >
               保存
             </Button>
           </Grid>
