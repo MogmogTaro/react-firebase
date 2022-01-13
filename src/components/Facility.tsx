@@ -9,7 +9,7 @@ import {
   TextField,
   makeStyles,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import dayjs from "dayjs";
 
 import DoneIcon from "@material-ui/icons/Done";
@@ -58,10 +58,26 @@ export const Facility: React.FC = () => {
   const style = useStyle();
   const [facility, setFacility] = useState(initFacility);
   const { system } = initFacility;
+
+  const onNameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newFacility: IFacility = {
+        ...facility,
+        name: e.target.value,
+      };
+      setFacility(newFacility);
+    },
+    [facility]
+  );
   return (
     <Container maxWidth="sm" className={style.root}>
       <Paper className={style.paper}>
-        <TextField label="設備名" fullWidth value={facility.name} />
+        <TextField
+          label="設備名"
+          fullWidth
+          value={facility.name}
+          onChange={onNameChange}
+        />
         <TextField label="詳細" fullWidth multiline value={facility.note} />
         <InputLabel shrink>登録者</InputLabel>
         <p>
