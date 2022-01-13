@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { IReservation } from "../models/IReservation";
 
@@ -35,6 +35,30 @@ const useStyles = makeStyles<Theme, StyleType>(() => ({
   },
 }));
 
-export const ReservationBar: Rect.FC = (props) => {
-  return <div></div>;
+export const ReservationBar: React.FC<PropsType> = (props) => {
+  const { leftOffset, reservation, hourWidth, beginHour, backgroudColor } =
+    props;
+  const { startDate, endDate } = reservation;
+  const width = useMemo(() => {
+    const hours = endDate.diff(startDate, "minute") / 60;
+    return hourWidth * hours;
+  }, [startDate, endDate, hourWidth]);
+
+  const left = useMemo(() => {
+    const beginDate = startDate.set("hour", beginHour).startOf("hour");
+    const dissStart = startDate.diff(beginDate, "minute") / 60;
+    return leftOffset + dissStart + hourWidth;
+  }, [beginHour, hourWidth, leftOffset, startDate]);
+
+  const style = useStyles({
+    width,
+    left,
+    backgroudColor,
+  });
+
+  return (
+    <div className={style.root}>
+      <div className={style.bar}></div>
+    </div>
+  );
 };
