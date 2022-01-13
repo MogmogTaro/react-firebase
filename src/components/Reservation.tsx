@@ -3,14 +3,17 @@ import {
   Button,
   Chip,
   Container,
+  FormControl,
   Grid,
   InputLabel,
   makeStyles,
+  MenuItem,
   Paper,
+  Select,
   TextField,
 } from "@material-ui/core";
 import dayjs, { Dayjs } from "dayjs";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { IReservation } from "../models/IReservation";
@@ -20,6 +23,31 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { DateTimePicker } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import { IFacility } from "../models/IFacility";
+
+const dummyFacilities: IFacility[] = [
+  {
+    id: "01",
+    name: "設備００１",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    system: {} as any,
+    note: "",
+  },
+  {
+    id: "02",
+    name: "設備００２",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    system: {} as any,
+    note: "",
+  },
+  {
+    id: "03",
+    name: "設備００３",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    system: {} as any,
+    note: "",
+  },
+];
 
 const initReservation: IReservation = {
   id: "001",
@@ -45,13 +73,11 @@ const initReservation: IReservation = {
 };
 
 const useStyle = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-    },
-  },
   paper: {
     padding: theme.spacing(1),
+    "& > div": {
+      marginBottom: theme.spacing(2),
+    },
   },
   rightActions: {
     textAlign: "right",
@@ -75,43 +101,72 @@ export const Reservation = () => {
     setDate(date);
   }, []);
 
+  const [facilities, setFacilities] = useState<IFacility[]>(dummyFacilities);
+  const facilityMenuItems = useMemo(() => {
+    return facilities.map((f) => (
+      <MenuItem key={f.id} value={f.id}>
+        {f.name}
+      </MenuItem>
+    ));
+  }, []);
+
   return (
-    <Container maxWidth="sm" className={style.root}>
+    <Container maxWidth="sm">
       <Paper className={style.paper}>
-        <Controller
-          control={control}
-          name="startDate"
-          render={(data) => {
-            return (
-              <DateTimePicker
-                value={data.value}
-                onChange={data.onChange}
-                onBlur={data.onBlur}
-                label="開始日時"
-                format="YYYY/MM/DD HH:mm"
-                ampm={false}
-                minutesStep={15}
-              />
-            );
-          }}
-        />
-        <Controller
-          control={control}
-          name="endDate"
-          render={(data) => {
-            return (
-              <DateTimePicker
-                value={data.value}
-                onChange={data.onChange}
-                onBlur={data.onBlur}
-                label="終了日時"
-                format="YYYY/MM/DD HH:mm"
-                ampm={false}
-                minutesStep={15}
-              />
-            );
-          }}
-        />
+        <FormControl>
+          <InputLabel id="facility-label">設備</InputLabel>
+
+          <Controller
+            name="facilityId"
+            control={control}
+            render={({ value, onChange }) => (
+              <Select
+                labelId="facility-label"
+                value={value}
+                onChange={onChange}
+              >
+                {facilityMenuItems}
+              </Select>
+            )}
+          />
+        </FormControl>
+
+        <div style={{ display: "flex" }}>
+          <Controller
+            control={control}
+            name="startDate"
+            render={(data) => {
+              return (
+                <DateTimePicker
+                  value={data.value}
+                  onChange={data.onChange}
+                  onBlur={data.onBlur}
+                  label="開始日時"
+                  format="YYYY/MM/DD HH:mm"
+                  ampm={false}
+                  minutesStep={15}
+                />
+              );
+            }}
+          />
+          <Controller
+            control={control}
+            name="endDate"
+            render={(data) => {
+              return (
+                <DateTimePicker
+                  value={data.value}
+                  onChange={data.onChange}
+                  onBlur={data.onBlur}
+                  label="終了日時"
+                  format="YYYY/MM/DD HH:mm"
+                  ampm={false}
+                  minutesStep={15}
+                />
+              );
+            }}
+          />
+        </div>
         <Controller
           control={control}
           name="subject"
