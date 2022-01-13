@@ -17,6 +17,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import { IFacility } from "../models/IFacility";
 
+import { useForm } from "react-hook-form";
+
 const initFacility: IFacility = {
   id: "",
   name: "name の初期値",
@@ -59,6 +61,11 @@ export const Facility: React.FC = () => {
   const [facility, setFacility] = useState(initFacility);
   const { system } = initFacility;
 
+  const { register, errors } = useForm({
+    defaultValues: initFacility,
+    mode: "onBlur",
+  });
+
   const onNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newFacility: IFacility = {
@@ -71,6 +78,8 @@ export const Facility: React.FC = () => {
   );
   return (
     <Container maxWidth="sm" className={style.root}>
+      <input ref={register({ required: true })} name="name" />
+      <p>{errors.name ? "必須です" : ""}</p>
       <Paper className={style.paper}>
         <TextField
           label="設備名"
