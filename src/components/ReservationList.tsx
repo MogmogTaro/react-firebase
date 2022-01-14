@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { IFacility } from "../models/IFacility";
 import { IReservation } from "../models/IReservation";
 import dayjs from "dayjs";
 import { makeStyles } from "@material-ui/core";
+import { FacilityLane } from "../components/FacilityLane";
 
 import {
   red,
@@ -15,6 +16,7 @@ import {
   teal,
   orange,
 } from "@material-ui/core/colors";
+import { Facility } from "./Facility";
 
 const dummyFacilities: IFacility[] = [
   {
@@ -154,14 +156,43 @@ const colors = [
 ];
 
 export const ReservationList: React.FC = () => {
+  const styles = useStyles();
+  const headerCells = useMemo(() => {
+    const cells: JSX.Element[] = [];
+    for (let i = 8; i <= 19; i++) {
+      cells.push(
+        <div key={i} className="timeCell">
+          {i}
+        </div>
+      );
+    }
+    return cells;
+  }, []);
+
+  const lanes = useMemo(() => {
+    return dummyFacilities.map((facility, index) => {
+      const reservations = dummyReservations.filter(
+        (r) => r.facilityId === facility.id
+      );
+      return (
+        <FacilityLane
+          key={facility.id}
+          cellWidth={30}
+          facility={facility}
+          reservations={reservations}
+          className={styles.lane}
+          backgroudColor={getColor[index]}
+        />
+      );
+    });
+  }, [styles.lane]);
   return (
     <div>
-      <p>
-        <Link to="/reservation">予約詳細</Link>
-      </p>
-      <p>
-        <Link to="/facility">設備詳細</Link>
-      </p>
+      <div className={styles.lane}>
+        <div className="laneHeader"></div>
+        {headerCells}
+      </div>
+      {lanes}
     </div>
   );
 };

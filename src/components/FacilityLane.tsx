@@ -9,7 +9,7 @@ type Props = JSX.IntrinsicElements["div"] & {
   facility: IFacility;
   cellWidth: number;
   backgroudColor: Property.backgroudColor;
-  reservation: IReservation;
+  reservations: IReservation;
 };
 
 const useStyles = makeStyles<
