@@ -1,5 +1,5 @@
-import { Dayjs } from 'dayjs';
-import { ISystem } from './ISystem';
+import { Dayjs } from "dayjs";
+import { ISystem } from "./ISystem";
 
 export interface IReservation {
   id: string;
