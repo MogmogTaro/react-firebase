@@ -1,10 +1,10 @@
+import Utils from "@date-io/dayjs";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/ja";
 import React from "react";
 import ReactDom from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import Utils from "@date-io/dayjs";
-import "dayjs/locale/ja";
-import dayjs, { Dayjs } from "dayjs";
 import { Routing } from "./components/Routing";
 
 dayjs.locale("ja");

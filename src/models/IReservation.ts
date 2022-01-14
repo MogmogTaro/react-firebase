@@ -1,7 +1,7 @@
-import { ISystem } from "./ISystem";
-import { Dayjs } from "dayjs";
+import { Dayjs } from 'dayjs';
+import { ISystem } from './ISystem';
 
-export type IReservation = {
+export interface IReservation {
   id: string;
   facilityId: string;
   subject: string;
@@ -9,4 +9,4 @@ export type IReservation = {
   startDate: Dayjs;
   endDate: Dayjs;
   system: ISystem;
-};
+}

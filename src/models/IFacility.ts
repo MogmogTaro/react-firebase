@@ -1,8 +1,8 @@
-import { ISystem } from "./ISystem";
+import { ISystem } from './ISystem';
 
-export type IFacility = {
+export interface IFacility {
   id: string;
   name: string;
   note?: string;
   system: ISystem;
-};
+}

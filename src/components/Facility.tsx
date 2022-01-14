@@ -52,7 +52,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export const Facility: React.FC = () => {
-  const styles = useStyle();
+  const style = useStyle();
   const { system } = initFacility;
   const { errors, control } = useForm({
     defaultValues: initFacility,
@@ -60,8 +60,8 @@ export const Facility: React.FC = () => {
   });
 
   return (
-    <Container maxWidth="sm" className={styles.root}>
-      <Paper className={styles.paper}>
+    <Container maxWidth="sm" className={style.root}>
+      <Paper className={style.paper}>
         <Controller
           control={control}
           name="name"
@@ -81,24 +81,28 @@ export const Facility: React.FC = () => {
           as={<TextField label="詳細" fullWidth multiline value="" />}
         />
         <InputLabel shrink>登録者</InputLabel>
-        <Chip
-          label={system.createUser.displayName}
-          avatar={<Avatar src={system.createUser.face} />}
-        />
-        {dayjs(system.createDate).format("YYYY-MM-DD HH:mm")}
+        <p>
+          <Chip
+            label={system.createUser.displayName}
+            avatar={<Avatar src={system.createUser.face} />}
+          />
+          {dayjs(system.createDate).format("YYYY-MM-DD HH:mm")}
+        </p>
         <InputLabel shrink>更新者</InputLabel>
-        <Chip
-          label={system.lastUpdateUser.displayName}
-          avatar={<Avatar src={system.lastUpdateUser.face} />}
-        />
-        {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
+        <p>
+          <Chip
+            label={system.lastUpdateUser.displayName}
+            avatar={<Avatar src={system.lastUpdateUser.face} />}
+          />
+          {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
+        </p>
         <Grid container>
           <Grid item xs={6}>
-            <Button className={styles.cancelButton} startIcon={<DeleteIcon />}>
+            <Button className={style.cancelButton} startIcon={<DeleteIcon />}>
               削除
             </Button>
           </Grid>
-          <Grid item xs={6} className={styles.rightActions}>
+          <Grid item xs={6} className={style.rightActions}>
             <Button
               variant="contained"
               color="primary"

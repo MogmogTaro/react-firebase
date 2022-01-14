@@ -1,12 +1,12 @@
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { Property } from "csstype";
-import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { IFacility } from "../models/IFacility";
-import { IReservation } from "../models/IReservation";
-import { ReservationBar } from "./ReservationBar";
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Property } from 'csstype';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { IFacility } from '../models/IFacility';
+import { IReservation } from '../models/IReservation';
+import { ReservationBar } from './ReservationBar';
 
-type Props = JSX.IntrinsicElements["div"] & {
+type Props = JSX.IntrinsicElements['div'] & {
   facility: IFacility;
   cellWidth: number;
   backgroundColor: Property.BackgroundColor;
@@ -21,15 +21,20 @@ const useStyles = makeStyles<
 >((theme) => ({
   header: {
     backgroundColor: (p) => p.backgroundColor,
-    "& a": {
+    '& a': {
       color: (p) => theme.palette.getContrastText(p.backgroundColor),
     },
   },
 }));
 
 export const FacilityLane: React.FC<Props> = (props) => {
-  const { cellWidth, facility, reservations, backgroundColor, ...rootAttr } =
-    props;
+  const {
+    cellWidth,
+    facility,
+    reservations,
+    backgroundColor,
+    ...rootAttr
+  } = props;
   const styles = useStyles({ backgroundColor });
   const cells = useMemo(() => {
     const r: JSX.Element[] = [];
@@ -56,7 +61,7 @@ export const FacilityLane: React.FC<Props> = (props) => {
     <div {...rootAttr}>
       {bars}
       <div className={`laneHeader ${styles.header}`}>
-        <Link to={"/facility/" + facility.id}>{facility.name}</Link>
+        <Link to={'/facility/' + facility.id}>{facility.name}</Link>
       </div>
       {cells}
     </div>

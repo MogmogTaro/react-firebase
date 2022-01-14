@@ -7,102 +7,104 @@ import {
   red,
   teal,
   yellow,
-} from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
-import dayjs, { Dayjs } from "dayjs";
+} from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import dayjs, { Dayjs } from 'dayjs';
 import React, {
   createContext,
+  Dispatch,
+  Reducer,
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useRef,
   useState,
-} from "react";
-import { IFacility } from "../models/IFacility";
-import { IReservation } from "../models/IReservation";
-import { FacilityLane } from "./FacilityLane";
-
-import { ReservationListHeader } from "./ReservationListHeader";
+} from 'react';
+import { IFacility } from '../models/IFacility';
+import { IReservation } from '../models/IReservation';
+import { FacilityLane } from './FacilityLane';
+import { ReservationListHeader } from './ReservationListHeader';
 
 const dummyFacilities: IFacility[] = [
   {
-    id: "01",
-    name: "設備００１",
+    id: '01',
+    name: '設備００１',
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
-    note: "",
+    note: '',
   },
   {
-    id: "02",
-    name: "設備００２",
+    id: '02',
+    name: '設備００２',
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
-    note: "",
+    note: '',
   },
   {
-    id: "03",
-    name: "設備００３",
+    id: '03',
+    name: '設備００３',
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
-    note: "",
+    note: '',
   },
 ];
 
 const dummyReservations: IReservation[] = [
   {
-    id: "001",
-    facilityId: "01",
-    subject: "目的０１",
-    description: "説明００１",
-    startDate: dayjs("2021-04-05T09:00"),
-    endDate: dayjs("2021-04-05T09:00").add(1, "hour"),
+    id: '001',
+    facilityId: '01',
+    subject: '目的０１',
+    description: '説明００１',
+    startDate: dayjs('2021-04-05T09:00'),
+    endDate: dayjs('2021-04-05T09:00').add(1, 'hour'),
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
   },
   {
-    id: "002",
-    facilityId: "01",
-    subject: "目的０２",
-    description: "説明００１",
-    startDate: dayjs("2021-04-05T11:00"),
-    endDate: dayjs("2021-04-05T11:00").add(0.5, "hour"),
+    id: '002',
+    facilityId: '01',
+    subject: '目的０２',
+    description: '説明００１',
+    startDate: dayjs('2021-04-05T11:00'),
+    endDate: dayjs('2021-04-05T11:00').add(0.5, 'hour'),
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
   },
   {
-    id: "003",
-    facilityId: "02",
-    subject: "目的０３",
-    description: "説明００１",
-    startDate: dayjs("2021-04-05T14:00"),
-    endDate: dayjs("2021-04-05T14:00").add(1.5, "hour"),
+    id: '003',
+    facilityId: '02',
+    subject: '目的０３',
+    description: '説明００１',
+    startDate: dayjs('2021-04-05T14:00'),
+    endDate: dayjs('2021-04-05T14:00').add(1.5, 'hour'),
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
   },
   {
-    id: "004",
-    facilityId: "02",
-    subject: "目的０４",
-    description: "説明００１",
-    startDate: dayjs("2021-04-05T16:00"),
-    endDate: dayjs("2021-04-05T16:00").add(2, "hour"),
+    id: '004',
+    facilityId: '02',
+    subject: '目的０４',
+    description: '説明００１',
+    startDate: dayjs('2021-04-05T16:00'),
+    endDate: dayjs('2021-04-05T16:00').add(2, 'hour'),
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
   },
   {
-    id: "005",
-    facilityId: "03",
-    subject: "目的０５",
-    description: "説明００１",
-    startDate: dayjs("2021-04-05T10:00"),
-    endDate: dayjs("2021-04-05T10:00").add(2.5, "hour"),
+    id: '005',
+    facilityId: '03',
+    subject: '目的０５',
+    description: '説明００１',
+    startDate: dayjs('2021-04-05T10:00'),
+    endDate: dayjs('2021-04-05T10:00').add(2.5, 'hour'),
     // ダミーデータのため不必要なデータの定義は省略
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
@@ -112,34 +114,34 @@ const dummyReservations: IReservation[] = [
 const useStyles = makeStyles((theme) => ({
   lane: {
     border: `1px solid ${theme.palette.divider}`,
-    borderBottom: "none",
-    display: "flex",
-    height: "40px",
-    width: "100%",
-    boxSizing: "border-box",
-    position: "relative",
-    "&:last-child": {
+    borderBottom: 'none',
+    display: 'flex',
+    height: '40px',
+    width: '100%',
+    boxSizing: 'border-box',
+    position: 'relative',
+    '&:last-child': {
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
-    "& .laneHeader": {
+    '& .laneHeader': {
       borderRight: `1px solid ${theme.palette.divider}`,
-      width: "100px",
-      boxSizing: "border-box",
+      width: '100px',
+      boxSizing: 'border-box',
       flexGrow: 0,
       flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      padding: "0.5rem",
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0.5rem',
     },
-    "& .timeCell": {
+    '& .timeCell': {
       borderRight: `1px solid ${theme.palette.divider}`,
       flexGrow: 1,
       flexBasis: 0,
-      boxSizing: "border-box",
-      display: "flex",
-      alignItems: "center",
-      "&:last-child": {
-        borderRight: "none",
+      boxSizing: 'border-box',
+      display: 'flex',
+      alignItems: 'center',
+      '&:last-child': {
+        borderRight: 'none',
       },
     },
   },
@@ -161,14 +163,41 @@ const getColor = (n: number) => {
   return colors[index];
 };
 
+type ActionType = 'ChangeDate' | 'NextDay' | 'PrevDay';
+
+type Action = {
+  type: ActionType;
+  payload?: Dayjs;
+};
+
+type StateType = {
+  currentDate: Dayjs;
+};
+
+const reducerProcesses: {
+  [type in ActionType]: (s: StateType, a: Action) => StateType;
+} = {
+  ChangeDate: (s, a) => {
+    return a.payload ? { ...s, currentDate: a.payload } : s;
+  },
+  NextDay: (s) => ({ ...s, currentDate: s.currentDate.add(1, 'day') }),
+  PrevDay: (s) => ({ ...s, currentDate: s.currentDate.add(-1, 'day') }),
+};
+
+const reducer: Reducer<StateType, Action> = (state, action) => {
+  return reducerProcesses[action.type](state, action);
+};
+
 type ContextType = {
   currentDate: Dayjs;
+  dispatch: Dispatch<Action>;
 };
 
 export const CurrentDateContext = createContext<ContextType>({} as ContextType);
 
 export const ReservationList: React.FC = () => {
-  const [currentDate] = useState(dayjs("2020-01-01"));
+  const [state, dispatch] = useReducer(reducer, { currentDate: dayjs() });
+
   const cell = useRef<HTMLDivElement>(null);
   const [cellWidth, setCellWidth] = useState<number>(0);
   const styles = useStyles();
@@ -178,9 +207,9 @@ export const ReservationList: React.FC = () => {
   }, [cell]);
   useEffect(onResize, [cell]);
   useEffect(() => {
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
   const headerCells = useMemo(() => {
@@ -188,13 +217,13 @@ export const ReservationList: React.FC = () => {
     cells.push(
       <div key={8} ref={cell} className="timeCell">
         8
-      </div>
+      </div>,
     );
     for (let i = 9; i <= 19; i++) {
       cells.push(
         <div key={i} className="timeCell">
           {i}
-        </div>
+        </div>,
       );
     }
     return cells;
@@ -202,7 +231,7 @@ export const ReservationList: React.FC = () => {
   const lanes = useMemo(() => {
     return dummyFacilities.map((facility, index) => {
       const reservations = dummyReservations.filter(
-        (r) => r.facilityId === facility.id
+        (r) => r.facilityId === facility.id,
       );
       return (
         <FacilityLane
@@ -218,7 +247,9 @@ export const ReservationList: React.FC = () => {
   }, [styles.lane, cellWidth]);
   return (
     <div>
-      <CurrentDateContext.Provider value={{ currentDate }}>
+      <CurrentDateContext.Provider
+        value={{ currentDate: state.currentDate, dispatch }}
+      >
         <ReservationListHeader />
         <div>
           <div className={styles.lane}>
