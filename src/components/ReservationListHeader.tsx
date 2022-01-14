@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { DoubleArrow } from "@material-ui/icons";
 import { DatePicker } from "@material-ui/pickers";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useContext } from "react";
+import { CurrentDateContext } from "./ReservationList";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles(() => ({
 
 export const ReservationListHeader: React.FC = () => {
   const styles = useStyles();
+  const context = useContext(CurrentDateContext);
   return (
     <div>
       <div className={styles.header}>
@@ -41,12 +43,12 @@ export const ReservationListHeader: React.FC = () => {
         </div>
         <div>
           <DatePicker
-            value={dayjs()}
+            value={context.currentDate}
             className={styles.date}
             format="YYYY-MM-DD"
             onChange={() => {}}
           />
-          <p className={styles.weekday}>{dayjs().format("dddd")}</p>
+          <p className={styles.weekday}>{context.currentDate.format("dddd")}</p>
         </div>
         <div>
           <Button endIcon={<DoubleArrow />}>1日後</Button>

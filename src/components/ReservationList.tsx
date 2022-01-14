@@ -9,8 +9,9 @@ import {
   yellow,
 } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, {
+  createContext,
   useCallback,
   useEffect,
   useMemo,
@@ -160,7 +161,14 @@ const getColor = (n: number) => {
   return colors[index];
 };
 
+type ContextType = {
+  currentDate: Dayjs;
+};
+
+export const CurrentDateContext = createContext<ContextType>({} as ContextType);
+
 export const ReservationList: React.FC = () => {
+  const [currentDate] = useState(dayjs("2020-01-01"));
   const cell = useRef<HTMLDivElement>(null);
   const [cellWidth, setCellWidth] = useState<number>(0);
   const styles = useStyles();
@@ -210,14 +218,16 @@ export const ReservationList: React.FC = () => {
   }, [styles.lane, cellWidth]);
   return (
     <div>
-      <ReservationListHeader />
-      <div>
-        <div className={styles.lane}>
-          <div className="laneHeader"></div>
-          {headerCells}
+      <CurrentDateContext.Provider value={{ currentDate }}>
+        <ReservationListHeader />
+        <div>
+          <div className={styles.lane}>
+            <div className="laneHeader"></div>
+            {headerCells}
+          </div>
+          {lanes}
         </div>
-        {lanes}
-      </div>
+      </CurrentDateContext.Provider>
     </div>
   );
 };
