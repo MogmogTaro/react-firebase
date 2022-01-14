@@ -1,22 +1,21 @@
-import React, { useMemo } from "react";
-
+import React, { useCallback, useMemo } from "react";
 import { IReservation } from "../models/IReservation";
-
 import { Property } from "csstype";
-import { makeStyles, Theme } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 type PropsType = {
   reservation: IReservation;
   leftOffset: number;
   beginHour: number;
   hourWidth: number;
-  backgroudColor: Property.backgroudColor;
+  backgroundColor: Property.BackgroundColor;
 };
 
 type StyleType = {
   width: number;
   left: number;
-  backgroudColor: Property.backgroudColor;
+  backgroundColor: Property.BackgroundColor;
 };
 
 const useStyles = makeStyles<Theme, StyleType>(() => ({
@@ -31,14 +30,16 @@ const useStyles = makeStyles<Theme, StyleType>(() => ({
   bar: {
     height: "50%",
     width: "100%",
-    backgroundColor: (p) => p.backgroudColor,
+    backgroundColor: (p) => p.backgroundColor,
+    cursor: "pointer",
   },
 }));
 
 export const ReservationBar: React.FC<PropsType> = (props) => {
-  const { leftOffset, reservation, hourWidth, beginHour, backgroudColor } =
+  const { leftOffset, reservation, hourWidth, beginHour, backgroundColor } =
     props;
   const { startDate, endDate } = reservation;
+
   const width = useMemo(() => {
     const hours = endDate.diff(startDate, "minute") / 60;
     return hourWidth * hours;
@@ -46,19 +47,24 @@ export const ReservationBar: React.FC<PropsType> = (props) => {
 
   const left = useMemo(() => {
     const beginDate = startDate.set("hour", beginHour).startOf("hour");
-    const dissStart = startDate.diff(beginDate, "minute") / 60;
-    return leftOffset + dissStart + hourWidth;
+    const diffStart = startDate.diff(beginDate, "minute") / 60;
+    return leftOffset + diffStart * hourWidth;
   }, [beginHour, hourWidth, leftOffset, startDate]);
 
-  const styles = useStyles({
+  const style = useStyles({
     width,
     left,
-    backgroudColor,
+    backgroundColor,
   });
+
+  const history = useHistory();
+  const click = useCallback(() => {
+    history.push("/reservation/" + reservation.id);
+  }, [reservation.id]);
 
   return (
     <div className={style.root}>
-      <div className={style.bar}></div>
+      <div className={style.bar} onClick={click}></div>
     </div>
   );
 };

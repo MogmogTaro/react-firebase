@@ -1,50 +1,49 @@
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import { Property } from "csstype";
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { IFacility } from "../models/IFacility";
 import { IReservation } from "../models/IReservation";
-import { Property } from "csstype";
-import { makeStyles } from "@material-ui/core";
 import { ReservationBar } from "./ReservationBar";
 
 type Props = JSX.IntrinsicElements["div"] & {
   facility: IFacility;
   cellWidth: number;
-  backgroudColor: Property.backgroudColor;
-  reservations: IReservation;
+  backgroundColor: Property.BackgroundColor;
+  reservations: IReservation[];
 };
 
 const useStyles = makeStyles<
   Theme,
   {
-    backgroundColor: Property.backgroudColor;
+    backgroundColor: Property.BackgroundColor;
   }
 >((theme) => ({
   header: {
     backgroundColor: (p) => p.backgroundColor,
-    color: (p) => theme.palette.getContrastText(p.backgroundColor),
+    "& a": {
+      color: (p) => theme.palette.getContrastText(p.backgroundColor),
+    },
   },
 }));
 
 export const FacilityLane: React.FC<Props> = (props) => {
-  const { facility, cellWidth, reservation, backgroudColor, ...rootAttr } =
+  const { cellWidth, facility, reservations, backgroundColor, ...rootAttr } =
     props;
-
-  const styles = useStyles({
-    backgroudColor,
-  });
-
+  const styles = useStyles({ backgroundColor });
   const cells = useMemo(() => {
     const r: JSX.Element[] = [];
     for (let i = 0; i <= 11; i++) {
-      r.push(<div key={i} className="timeCell"></div>);
+      r.push(<Link key={i} className="timeCell" to="/reservation"></Link>);
     }
     return r;
   }, []);
   const bars = useMemo(() => {
-    return reservation.map((r) => {
+    return reservations.map((r) => {
       return (
         <ReservationBar
           key={r.id}
-          backgroudColor={backgroudColor}
+          backgroundColor={backgroundColor}
           beginHour={8}
           reservation={r}
           hourWidth={cellWidth}
@@ -52,12 +51,14 @@ export const FacilityLane: React.FC<Props> = (props) => {
         />
       );
     });
-  }, []);
+  }, [reservations, backgroundColor, cellWidth]);
   return (
     <div {...rootAttr}>
+      {bars}
       <div className={`laneHeader ${styles.header}`}>
-        <p>{facility.name}</p>
+        <Link to={"/facility/" + facility.id}>{facility.name}</Link>
       </div>
+      {cells}
     </div>
   );
 };

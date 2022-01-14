@@ -85,7 +85,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export const Reservation: React.FC = () => {
-  const style = useStyle();
+  const styles = useStyle();
   const { system } = initReservation;
   const { errors, control } = useForm<IReservation>({
     defaultValues: initReservation,
@@ -102,7 +102,7 @@ export const Reservation: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Paper className={style.paper}>
+      <Paper className={styles.paper}>
         <FormControl>
           <InputLabel id="facility-label">設備</InputLabel>
           <Controller
@@ -188,11 +188,11 @@ export const Reservation: React.FC = () => {
         {dayjs(system.lastUpdate).format("YYYY-MM-DD HH:mm")}
         <Grid container>
           <Grid item xs={6}>
-            <Button className={style.cancelButton} startIcon={<DeleteIcon />}>
+            <Button className={styles.cancelButton} startIcon={<DeleteIcon />}>
               削除
             </Button>
           </Grid>
-          <Grid item xs={6} className={style.rightActions}>
+          <Grid item xs={6} className={styles.rightActions}>
             <Button
               variant="contained"
               color="primary"

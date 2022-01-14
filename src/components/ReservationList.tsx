@@ -1,22 +1,25 @@
-import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
-import { IFacility } from "../models/IFacility";
-import { IReservation } from "../models/IReservation";
-import dayjs from "dayjs";
-import { makeStyles } from "@material-ui/core";
-import { FacilityLane } from "../components/FacilityLane";
-
 import {
-  red,
-  purple,
   indigo,
   lightBlue,
   lightGreen,
-  yellow,
-  teal,
   orange,
+  purple,
+  red,
+  teal,
+  yellow,
 } from "@material-ui/core/colors";
-import { Facility } from "./Facility";
+import { makeStyles } from "@material-ui/core/styles";
+import dayjs from "dayjs";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { IFacility } from "../models/IFacility";
+import { IReservation } from "../models/IReservation";
+import { FacilityLane } from "./FacilityLane";
 
 const dummyFacilities: IFacility[] = [
   {
@@ -103,11 +106,6 @@ const dummyReservations: IReservation[] = [
   },
 ];
 
-const getColor = (n: number) => {
-  const index = n % 8;
-  return colors[index];
-};
-
 const useStyles = makeStyles((theme) => ({
   lane: {
     border: `1px solid ${theme.palette.divider}`,
@@ -155,11 +153,34 @@ const colors = [
   orange[500],
 ];
 
+const getColor = (n: number) => {
+  const index = n % 8;
+  return colors[index];
+};
+
 export const ReservationList: React.FC = () => {
+  const cell = useRef<HTMLDivElement>(null);
+  const [cellWidth, setCellWidth] = useState<number>(0);
   const styles = useStyles();
+  const onResize = useCallback(() => {
+    if (!cell?.current) return;
+    setCellWidth(cell.current.getBoundingClientRect().width);
+  }, [cell]);
+  useEffect(onResize, [cell]);
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
   const headerCells = useMemo(() => {
     const cells: JSX.Element[] = [];
-    for (let i = 8; i <= 19; i++) {
+    cells.push(
+      <div key={8} ref={cell} className="timeCell">
+        8
+      </div>
+    );
+    for (let i = 9; i <= 19; i++) {
       cells.push(
         <div key={i} className="timeCell">
           {i}
@@ -168,7 +189,6 @@ export const ReservationList: React.FC = () => {
     }
     return cells;
   }, []);
-
   const lanes = useMemo(() => {
     return dummyFacilities.map((facility, index) => {
       const reservations = dummyReservations.filter(
@@ -177,22 +197,24 @@ export const ReservationList: React.FC = () => {
       return (
         <FacilityLane
           key={facility.id}
-          cellWidth={30}
+          cellWidth={cellWidth}
           facility={facility}
           reservations={reservations}
           className={styles.lane}
-          backgroudColor={getColor[index]}
+          backgroundColor={getColor(index)}
         />
       );
     });
-  }, [styles.lane]);
+  }, [styles.lane, cellWidth]);
   return (
     <div>
-      <div className={styles.lane}>
-        <div className="laneHeader"></div>
-        {headerCells}
+      <div>
+        <div className={styles.lane}>
+          <div className="laneHeader"></div>
+          {headerCells}
+        </div>
+        {lanes}
       </div>
-      {lanes}
     </div>
   );
 };
