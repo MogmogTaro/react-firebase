@@ -21,6 +21,8 @@ import { IFacility } from "../models/IFacility";
 import { IReservation } from "../models/IReservation";
 import { FacilityLane } from "./FacilityLane";
 
+import { ReservationListHeader } from "./ReservationListHeader";
+
 const dummyFacilities: IFacility[] = [
   {
     id: "01",
@@ -208,6 +210,7 @@ export const ReservationList: React.FC = () => {
   }, [styles.lane, cellWidth]);
   return (
     <div>
+      <ReservationListHeader />
       <div>
         <div className={styles.lane}>
           <div className="laneHeader"></div>
